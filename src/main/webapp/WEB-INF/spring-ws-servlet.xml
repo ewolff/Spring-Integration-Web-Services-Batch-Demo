@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<import resource="classpath:application-config.xml" />
+
+	<bean id="payloadMapping"
+		class="org.springframework.ws.server.endpoint.mapping.PayloadRootAnnotationMethodEndpointMapping">
+		<property name="interceptors">
+			<list>
+				<ref local="validatingInterceptor" />
+				<ref local="loggingInterceptor" />
+			</list>
+		</property>
+	</bean>
+
+    <bean class="org.springframework.ws.server.endpoint.adapter.XPathParamAnnotationMethodEndpointAdapter">
+        <property name="namespaces">
+            <props>
+                <prop key="tns">http://www.ewolff.com/order</prop>
+            </props>
+        </property>
+    </bean>
+
+	<bean id="validatingInterceptor"
+		class="org.springframework.ws.soap.server.endpoint.interceptor.PayloadValidatingInterceptor">
+		<property name="xsdSchema" ref="schema" />
+		<property name="validateRequest" value="true" />
+		<property name="validateResponse" value="true" />
+	</bean>
+
+	<bean id="loggingInterceptor"
+		class="org.springframework.ws.server.endpoint.interceptor.PayloadLoggingInterceptor">
+	</bean>
+
+	<bean id="order"
+		class="org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition">
+		<property name="schema" ref="schema" />
+		<property name="portTypeName" value="Order" />
+		<property name="locationUri"
+			value="http://localhost:8080/order-handling/services" />
+	</bean>
+
+	<bean id="schema"
+		class="org.springframework.xml.xsd.SimpleXsdSchema">
+		<property name="xsd" value="classpath:order.xsd" />
+	</bean>
+
+</beans>

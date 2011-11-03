@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:orderRequest xmlns:tns="http://www.ewolff.com/order">
+	<tns:order>
+		<tns:customer-number>42</tns:customer-number>
+		<tns:order-item>
+			<tns:count>42</tns:count>
+			<tns:item>iPod</tns:item>
+		</tns:order-item>
+	</tns:order>
+</tns:orderRequest>

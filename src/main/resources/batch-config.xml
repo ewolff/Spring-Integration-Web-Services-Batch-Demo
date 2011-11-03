@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="jobLauncher"
+		class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+		<property name="jobRepository" ref="jobRepository" />
+	</bean>
+
+	<bean id="processOrderReader"
+		class="org.springframework.batch.item.database.JdbcCursorItemReader">
+		<property name="dataSource" ref="dataSource" />
+		<property name="fetchSize" value="10" />
+		<property name="sql" value="SELECT * FROM T_ORDER WHERE C_PROCESSED=0" />
+		<property name="rowMapper">
+			<bean class="com.ewolff.orderhandling.dao.OrderRowMapper" />
+		</property>
+	</bean>
+
+	<bean id="processOrderWriter" class="com.ewolff.orderhandling.fullfillment.OrderBatchProcess" />
+
+	<bean id="invoiceOrderReader" parent="processOrderReader">
+		<property name="sql"
+			value="SELECT * FROM T_ORDER WHERE C_PROCESSED=1 AND C_INVOICED=0" />
+	</bean>
+
+	<bean id="invoiceOrderWriter" class="com.ewolff.orderhandling.fullfillment.OrderBatchInvoice" />
+
+</beans>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://www.ewolff.com/order"
+	xmlns:tns="http://www.ewolff.com/order"
+	elementFormDefault="qualified">
+	<complexType name="Order">
+		<sequence>
+			<element name="customer-number" type="integer" />
+			<element name="express" minOccurs="0" type="boolean" />
+			<element name="order-item" type="tns:OrderElement"
+				maxOccurs="unbounded" />
+		</sequence>
+	</complexType>
+	<complexType name="OrderElement">
+		<all>
+			<element name="count" nillable="false"
+				type="positiveInteger" />
+			<element name="item" nillable="false" type="string" />
+		</all>
+	</complexType>
+	<element name="orderRequest">
+		<complexType>
+			<sequence>
+				<element name="order" type="tns:Order" />
+			</sequence>
+		</complexType>
+	</element>
+	<element name="orderResponse">
+		<complexType>
+			<sequence>
+				<element name="result" type="string" />
+			</sequence>
+		</complexType>
+	</element>
+</schema>

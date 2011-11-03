@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/batch"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<job id="fulfillmentjob">
+		<step id="process" next="invoice">
+			<tasklet>
+				<chunk reader="processOrderReader" writer="processOrderWriter"
+					commit-interval="10" />
+			</tasklet>
+		</step>
+		<step id="invoice">
+			<tasklet>
+				<chunk reader="invoiceOrderReader" writer="invoiceOrderWriter"
+					commit-interval="10" />
+			</tasklet>
+		</step>
+	</job>
+
+	<job-repository id="jobRepository" data-source="dataSource"
+		transaction-manager="transactionManager" />
+
+</beans:beans>

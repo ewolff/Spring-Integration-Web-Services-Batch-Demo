@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.springframework.org/schema/integration"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/jms http://www.springframework.org/schema/integration/jms
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd
+		http://www.springframework.org/schema/integration/file http://www.springframework.org/schema/integration/file/spring-integration-file-2.0.xsd
+		http://www.springframework.org/schema/integration/jms http://www.springframework.org/schema/integration/jms/spring-integration-jms-2.0.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-2.0.xsd"
+	xmlns:jms="http://www.springframework.org/schema/integration/jms"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:file="http://www.springframework.org/schema/integration/file">
+
+	<annotation-config />
+
+	<task:executor id="pool" pool-size="10" />
+
+	<channel id="fulfillment">
+		<queue />
+	</channel>
+	<bridge input-channel="fulfillment" output-channel="fulfillmentRouter">
+		<poller max-messages-per-poll="1" task-executor="pool">
+			<interval-trigger interval="100" time-unit="MILLISECONDS" />
+		</poller>
+	</bridge>
+	<channel id="fulfillmentRouter" />
+	<channel id="expressfulfillment" />
+	<channel id="normalfulfillment" />
+	<channel id="incomingfilecontent" />
+	<channel id="processedorder" />
+
+	<file:inbound-channel-adapter id="incomingfilename"
+		directory="file:/tmp/files" auto-create-directory="true">
+		<poller task-executor="pool">
+			<interval-trigger interval="1000" />
+		</poller>
+	</file:inbound-channel-adapter>
+
+	<file:file-to-string-transformer
+		delete-files="true" input-channel="incomingfilename" output-channel="incomingfilecontent" />
+
+	<jms:outbound-gateway id="jmsout" request-channel="expressfulfillment"
+		request-destination="fulfillment-queue" />
+
+</beans:beans>
