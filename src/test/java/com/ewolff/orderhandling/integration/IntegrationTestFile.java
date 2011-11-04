@@ -53,7 +53,7 @@ public class IntegrationTestFile extends AbstractSpringBasedTest {
 		printWriter.write("20,1,iPod,express,102,");
 		printWriter.close();
 		int i = 0;
-		while (i < 50 && expressFulFillmentJms.getOrders().size() == fulFillmentBeforeJms) {
+		while (i < 70 && expressFulFillmentJms.getOrders().size() == fulFillmentBeforeJms) {
 			Thread.sleep(100);
 			i++;
 		}
