@@ -25,8 +25,8 @@ import org.springframework.xml.transform.StringResult;
 import org.springframework.xml.transform.TransformerHelper;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("/spring-ws-servlet.xml")
-@DirtiesContext(classMode=ClassMode.AFTER_CLASS)
+@ContextConfiguration({ "/spring-ws-servlet.xml", "/application-config.xml" })
+@DirtiesContext(classMode = ClassMode.AFTER_CLASS)
 public class WSTest {
 
 	@Autowired

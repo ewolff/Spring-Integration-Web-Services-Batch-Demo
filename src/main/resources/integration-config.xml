@@ -20,9 +20,7 @@
 		<queue />
 	</channel>
 	<bridge input-channel="fulfillment" output-channel="fulfillmentRouter">
-		<poller max-messages-per-poll="1" task-executor="pool">
-			<interval-trigger interval="100" time-unit="MILLISECONDS" />
-		</poller>
+		<poller max-messages-per-poll="1" task-executor="pool" fixed-rate="100" />
 	</bridge>
 	<channel id="fulfillmentRouter" />
 	<channel id="expressfulfillment" />
@@ -32,9 +30,7 @@
 
 	<file:inbound-channel-adapter id="incomingfilename"
 		directory="file:/tmp/files" auto-create-directory="true">
-		<poller task-executor="pool">
-			<interval-trigger interval="1000" />
-		</poller>
+		<poller task-executor="pool" fixed-rate="1000" />
 	</file:inbound-channel-adapter>
 
 	<file:file-to-string-transformer

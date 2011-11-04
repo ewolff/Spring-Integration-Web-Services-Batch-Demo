@@ -18,7 +18,7 @@ import com.ewolff.orderhandling.domain.Order;
 import com.ewolff.orderhandling.domain.OrderItem;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({ "/application-config.xml", "/jobs.xml",
+@ContextConfiguration({ "/application-config.xml", "/META-INF/spring/batch/jobs/jobs.xml",
 		"/batch-config.xml" })
 @DirtiesContext(classMode=ClassMode.AFTER_CLASS)
 public class OrderBatchFulfillmentTest {

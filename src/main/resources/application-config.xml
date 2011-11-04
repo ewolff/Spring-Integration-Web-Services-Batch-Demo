@@ -8,7 +8,10 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:jms="http://www.springframework.org/schema/jms">
 
-	<context:component-scan base-package="com.ewolff.orderhandling" />
+	<context:component-scan base-package="com.ewolff.orderhandling">
+		<context:exclude-filter type="regex"
+			expression="com.ewolff.orderhandling.webservice.*" />
+	</context:component-scan>
 
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">
@@ -33,14 +36,13 @@
 	</bean>
 
 	<jms:listener-container>
-		<jms:listener destination="fulfillment-queue"
-			ref="expressFulFillmentJms" method="execute" />
+		<jms:listener destination="fulfillment-queue" ref="expressFulFillmentJms"
+			method="execute" />
 	</jms:listener-container>
 
 	<bean id="fulfillment-queue" class="org.apache.activemq.command.ActiveMQQueue">
 		<constructor-arg value="fulfillment-queue" />
 	</bean>
-
 
 	<import resource="integration-config.xml" />
 

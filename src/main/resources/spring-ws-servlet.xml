@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd"
+	xmlns:context="http://www.springframework.org/schema/context">
 
-	<import resource="classpath:application-config.xml" />
+	<context:component-scan base-package="com.ewolff.orderhandling.webservice" />
+
 
 	<bean id="payloadMapping"
 		class="org.springframework.ws.server.endpoint.mapping.PayloadRootAnnotationMethodEndpointMapping">
@@ -39,7 +42,7 @@
 		<property name="schema" ref="schema" />
 		<property name="portTypeName" value="Order" />
 		<property name="locationUri"
-			value="http://localhost:8080/order-handling/services" />
+			value="http://localhost:8080/orderhandling/services" />
 	</bean>
 
 	<bean id="schema"
