@@ -1,1 +1,5 @@
 This project shows how Spring Integration, Spring Batch and Spring Web Services used together.
+
+If deployed on a web server
+http://localhost:8080/orderhandling/ will be the Spring Batch admin front end
+http://localhost:8080/orderhandling/services/order.wsdl is the WSDL for the web service
