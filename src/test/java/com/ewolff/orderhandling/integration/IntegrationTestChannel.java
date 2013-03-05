@@ -15,6 +15,7 @@ import org.springframework.integration.MessageChannel;
 import org.springframework.integration.MessageHeaders;
 import org.springframework.integration.channel.QueueChannel;
 import org.springframework.integration.message.GenericMessage;
+import org.springframework.integration.support.MessageBuilder;
 
 import com.ewolff.orderhandling.domain.Order;
 import com.ewolff.orderhandling.domain.OrderItem;
@@ -39,28 +40,30 @@ public class IntegrationTestChannel extends AbstractSpringBasedTest {
 	@Test
 	public void testNormalOrder() throws Exception {
 		int fulFillmentBefore = normalFulFillment.getOrders().size();
-		Order order = new Order(false,21);
-		order.addOrderItem(new OrderItem(1,"iPod"));
+		Order order = new Order(false, 21);
+		order.addOrderItem(new OrderItem(1, "iPod"));
 		Message<Order> response = sendMessage(order, fulfillment);
 		Assert.assertEquals(21, response.getPayload().getCustomer());
-		Assert.assertEquals(fulFillmentBefore + 1, normalFulFillment.getOrders().size());
+		Assert.assertEquals(fulFillmentBefore + 1, normalFulFillment
+				.getOrders().size());
 	}
-	
+
 	@Test
 	public void testNormalOrderDirect() throws Exception {
 		int fulFillmentBefore = normalFulFillment.getOrders().size();
-		Order order = new Order(false,21);
-		order.addOrderItem(new OrderItem(1,"iPod"));
+		Order order = new Order(false, 21);
+		order.addOrderItem(new OrderItem(1, "iPod"));
 		Message<Order> response = sendMessage(order, normalfulfillment);
 		Assert.assertEquals(21, response.getPayload().getCustomer());
-		Assert.assertEquals(fulFillmentBefore + 1, normalFulFillment.getOrders().size());
+		Assert.assertEquals(fulFillmentBefore + 1, normalFulFillment
+				.getOrders().size());
 	}
-	
+
 	@Test
 	public void testExpressOrder() throws Exception {
 		int fulFillmentBeforeJms = expressFulFillmentJms.getOrders().size();
-		Order order = new Order(true,22);
-		order.addOrderItem(new OrderItem(1,"iPod"));
+		Order order = new Order(true, 22);
+		order.addOrderItem(new OrderItem(1, "iPod"));
 		Message<Order> response = sendMessage(order, fulfillment);
 		Assert.assertEquals(22, response.getPayload().getCustomer());
 		Assert.assertEquals(fulFillmentBeforeJms + 1, expressFulFillmentJms
@@ -68,16 +71,15 @@ public class IntegrationTestChannel extends AbstractSpringBasedTest {
 
 	}
 
-	private Message<Order> sendMessage(Order order, MessageChannel messageChannel) {
-		Map<String, Object> headers = new HashMap<String, Object>();
-		QueueChannel rendezvousChannel = new QueueChannel(10);
-		headers.put(MessageHeaders.REPLY_CHANNEL, rendezvousChannel);
-		GenericMessage<Order> message = new GenericMessage<Order>(order,
-				headers);
+	private Message<Order> sendMessage(Order order,
+			MessageChannel messageChannel) {
+		Message<Order> message = MessageBuilder.withPayload(order)
+				.setHeader(MessageHeaders.REPLY_CHANNEL, new QueueChannel(10))
+				.build();
 		messageChannel.send(message);
-		Message<Order> response = (Message<Order>) rendezvousChannel.receive(30000);
+		Message<Order> response = (Message<Order>) new QueueChannel(10)
+				.receive(30000);
 		return response;
 	}
-
 
 }
