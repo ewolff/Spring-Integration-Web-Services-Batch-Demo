@@ -36,10 +36,6 @@ public class IntegrationTestChannel extends AbstractSpringBasedTest {
 	@Autowired
 	private ExpressFulFillmentJms expressFulFillmentJms;
 
-	@Before
-	public void setUp() throws Exception {
-	}
-
 	@Test
 	public void testNormalOrder() throws Exception {
 		int fulFillmentBefore = normalFulFillment.getOrders().size();

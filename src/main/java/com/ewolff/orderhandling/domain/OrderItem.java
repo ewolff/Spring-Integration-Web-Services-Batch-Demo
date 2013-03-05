@@ -30,6 +30,13 @@ public class OrderItem implements Serializable {
 		this.item = item;
 	}
 
+	public OrderItem(int count, String item, int id) {
+		super();
+		this.item = item;
+		this.count = count;
+		this.id = id;
+	}
+
 	public int getId() {
 		return id;
 	}

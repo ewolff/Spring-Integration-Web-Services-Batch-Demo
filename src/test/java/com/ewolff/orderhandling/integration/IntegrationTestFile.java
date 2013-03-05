@@ -25,7 +25,7 @@ public class IntegrationTestFile extends AbstractSpringBasedTest {
 	public void testNormalOrder() throws Exception {
 		int fulFillmentBefore = normalFulFillment.getOrders().size();
 		PrintWriter printWriter = new PrintWriter("/tmp/files/orders" + System.currentTimeMillis());
-		printWriter.write("21,1,iPod,normal,101,");
+		printWriter.write("21,1,iPod,101,normal,");
 		printWriter.flush();
 		printWriter.close();
 		int i = 0;
@@ -43,7 +43,7 @@ public class IntegrationTestFile extends AbstractSpringBasedTest {
 		int fulFillmentBeforeJms = expressFulFillmentJms.getOrders().size();
 		File file = new File("/tmp/files/orders" + System.currentTimeMillis());
 		PrintWriter printWriter = new PrintWriter(file);
-		printWriter.write("20,1,iPod,express,102,");
+		printWriter.write("20,1,iPod,102,express,");
 		printWriter.close();
 		int i = 0;
 		while (i < 70 && expressFulFillmentJms.getOrders().size() == fulFillmentBeforeJms) {

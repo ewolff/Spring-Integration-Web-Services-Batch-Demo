@@ -27,10 +27,13 @@
 	<channel id="incomingfilecontent" />
 	<channel id="processedorder" />
 
-	<router input-channel="fulfillmentRouter"  expression="payload.express">
+	<router input-channel="fulfillmentRouter" expression="payload.express">
 		<mapping value="true" channel="expressfulfillment" />
 		<mapping value="false" channel="normalfulfillment" />
 	</router>
+
+	<splitter input-channel="incomingfilecontent"
+		output-channel="fulfillment" ref="fileParser" method="parse" />
 
 	<file:inbound-channel-adapter id="incomingfilename"
 		directory="file:/tmp/files" auto-create-directory="true">
