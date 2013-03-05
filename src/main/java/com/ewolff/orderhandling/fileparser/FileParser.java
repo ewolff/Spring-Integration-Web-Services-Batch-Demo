@@ -14,7 +14,6 @@ public class FileParser {
 
 	public List<Order> parse(String content) {
 		List<Order> result = new ArrayList<Order>();
-		System.out.println("Content: " + content);
 		StringTokenizer stringTokenizer = new StringTokenizer(content, ",");
 		while (stringTokenizer.hasMoreTokens()) {
 			Order order = new Order(false, Integer.parseInt(stringTokenizer
@@ -25,7 +24,6 @@ public class FileParser {
 			order.setExpress(stringTokenizer.nextToken().equalsIgnoreCase(
 					"express"));
 			result.add(order);
-			System.out.println("Order out: " + order);
 		}
 		return result;
 	}
