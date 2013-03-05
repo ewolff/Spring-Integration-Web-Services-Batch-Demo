@@ -1,20 +1,15 @@
 package com.ewolff.orderhandling.integration;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.annotation.Resource;
 
 import junit.framework.Assert;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.integration.Message;
 import org.springframework.integration.MessageChannel;
 import org.springframework.integration.MessageHeaders;
 import org.springframework.integration.channel.QueueChannel;
-import org.springframework.integration.message.GenericMessage;
 import org.springframework.integration.support.MessageBuilder;
 
 import com.ewolff.orderhandling.domain.Order;
@@ -73,12 +68,11 @@ public class IntegrationTestChannel extends AbstractSpringBasedTest {
 
 	private Message<Order> sendMessage(Order order,
 			MessageChannel messageChannel) {
+		QueueChannel replyChannel = new QueueChannel(10);
 		Message<Order> message = MessageBuilder.withPayload(order)
-				.setHeader(MessageHeaders.REPLY_CHANNEL, new QueueChannel(10))
-				.build();
+				.setHeader(MessageHeaders.REPLY_CHANNEL, replyChannel).build();
 		messageChannel.send(message);
-		Message<Order> response = (Message<Order>) new QueueChannel(10)
-				.receive(30000);
+		Message<Order> response = (Message<Order>) replyChannel.receive(30000);
 		return response;
 	}
 
