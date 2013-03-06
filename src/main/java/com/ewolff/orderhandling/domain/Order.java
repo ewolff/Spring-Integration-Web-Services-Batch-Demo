@@ -6,13 +6,13 @@ import java.util.List;
 
 public class Order implements Serializable {
 
+	private static final long serialVersionUID = 2001121671825784463L;
 	private boolean express;
 	private int customer;
 	private int id;
 	private boolean processed = false;
 	private boolean invoiced = false;
 	private List<OrderItem> orderItem = new ArrayList<OrderItem>();
-
 
 	public boolean isInvoiced() {
 		return invoiced;
@@ -75,7 +75,8 @@ public class Order implements Serializable {
 		for (OrderItem o : orderItem) {
 			boolean found = false;
 			for (OrderItem othero : otherOrder.orderItem) {
-				found = true;
+				if (o.equals(othero))
+					found = true;
 			}
 			if (!found) {
 				return false;
