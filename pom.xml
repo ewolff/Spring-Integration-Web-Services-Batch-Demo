@@ -8,7 +8,7 @@
 	<name>Order Handling</name>
 	<description>Order Handling demos Spring Integration, Spring Batch and Spring Web Services</description>
 	<properties>
-		<spring.version>3.1.4.RELEASE</spring.version>
+		<spring.version>5.3.18</spring.version>
 		<spring-integration.version>2.2.1.RELEASE</spring-integration.version>
 		<spring-ws.version>2.1.2.RELEASE</spring-ws.version>
 		<spring-batch.version>2.1.9.RELEASE</spring-batch.version>
